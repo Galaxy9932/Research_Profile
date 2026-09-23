@@ -130,7 +130,7 @@
           this.targetPhi = cfg.phi;
           this.targetTheta = cfg.theta;
           this.targetRadius = cfg.radius;
-          this.diskBoost = 1.0; // Energetic accretion pulse!
+          this.diskBoost = 0.5; // Energetic accretion pulse!
         }
       };
 
@@ -155,7 +155,7 @@
       // Keyboard navigation
       window.addEventListener('keydown', (e) => {
         if (e.key === 'Tab' || e.key === ' ') {
-          this.diskBoost = 1.0;
+          this.diskBoost = 0.5;
         }
       });
 
@@ -434,12 +434,18 @@
       this.time = now * 0.001;
 
       // Smooth decay of accretion surge
-      this.diskBoost = Math.max(0, this.diskBoost - 0.015);
+      this.diskBoost = Math.max(0, this.diskBoost - 0.012);
 
-      // Smooth camera interpolation (cinematic gliding)
-      this.currentTheta += (this.targetTheta + this.scrollProgress * 0.85 - this.currentTheta) * 0.05;
-      this.currentPhi += (this.targetPhi - this.currentPhi) * 0.05;
-      this.currentRadius += (this.targetRadius - this.currentRadius) * 0.05;
+      // Silky-smooth camera interpolation (shortest angular path & cinematic crane damping)
+      let dTheta = (this.targetTheta + this.scrollProgress * 0.70) - this.currentTheta;
+      dTheta = Math.atan2(Math.sin(dTheta), Math.cos(dTheta));
+      this.currentTheta += dTheta * 0.035;
+
+      const dPhi = this.targetPhi - this.currentPhi;
+      this.currentPhi += dPhi * 0.035;
+
+      const dR = this.targetRadius - this.currentRadius;
+      this.currentRadius += dR * 0.035;
 
       // Mouse damping
       this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.08;
@@ -476,7 +482,7 @@
       gl.uniform1f(this.uniforms.uDiskOuter, 17.0);
       gl.uniform1f(this.uniforms.uDiskRotSpeed, 1.0);
       gl.uniform1f(this.uniforms.uDiskSpin, 1.0);
-      gl.uniform1f(this.uniforms.uExposure, 1.3);
+      gl.uniform1f(this.uniforms.uExposure, 1.05);
       gl.uniform1f(this.uniforms.uAxisTilt, 0.0);
       gl.uniform1f(this.uniforms.uTheme, this.theme);
       gl.uniform1f(this.uniforms.uDiskBoost, this.diskBoost);

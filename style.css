@@ -663,16 +663,24 @@ a:hover {
 .content-section {
   display: none;
   padding: 3rem 0 5rem;
-  animation: fadeIn 0.25s ease-in-out;
+  opacity: 0;
+  transform: translateY(18px);
 }
 
 .content-section.active {
   display: block;
+  animation: smoothSectionEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes smoothSectionEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .section-header {

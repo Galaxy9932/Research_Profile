@@ -130,6 +130,8 @@ body {
   z-index: 0;
   pointer-events: none;
   background-color: #000000;
+  opacity: 0.50;
+  transition: opacity 0.6s ease;
 }
 #spacecraft-overlay {
   position: fixed;
@@ -139,6 +141,8 @@ body {
   height: 100vh;
   z-index: 1;
   pointer-events: none;
+  opacity: 0.70;
+  transition: opacity 0.6s ease;
 }
 .bg-vignette-overlay {
   position: fixed;
@@ -146,15 +150,19 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(circle at center, rgba(5,8,17,0.02) 0%, rgba(5,8,17,0.48) 100%);
+  background: radial-gradient(circle at center, rgba(5,8,17,0.18) 0%, rgba(5,8,17,0.65) 100%);
   pointer-events: none;
   z-index: 1;
+  transition: background 0.6s ease;
 }
 [data-theme="light"] #blackhole-canvas {
-  opacity: 0.90;
+  opacity: 0.25;
+}
+[data-theme="light"] #spacecraft-overlay {
+  opacity: 0.45;
 }
 [data-theme="light"] .bg-vignette-overlay {
-  background: radial-gradient(circle at center, rgba(248,250,252,0.12) 0%, rgba(248,250,252,0.60) 100%);
+  background: radial-gradient(circle at center, rgba(248,250,252,0.25) 0%, rgba(248,250,252,0.75) 100%);
 }
 
 .content-wrapper {
@@ -663,16 +671,24 @@ a:hover {
 .content-section {
   display: none;
   padding: 3rem 0 5rem;
-  animation: fadeIn 0.25s ease-in-out;
+  opacity: 0;
+  transform: translateY(18px);
 }
 
 .content-section.active {
   display: block;
+  animation: smoothSectionEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes smoothSectionEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .section-header {
@@ -1201,6 +1217,8 @@ body {
   z-index: 0;
   pointer-events: none;
   background-color: #000000;
+  opacity: 0.50;
+  transition: opacity 0.6s ease;
 }
 #spacecraft-overlay {
   position: fixed;
@@ -1210,6 +1228,8 @@ body {
   height: 100vh;
   z-index: 1;
   pointer-events: none;
+  opacity: 0.70;
+  transition: opacity 0.6s ease;
 }
 .bg-vignette-overlay {
   position: fixed;
@@ -1217,15 +1237,19 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(circle at center, rgba(5,8,17,0.02) 0%, rgba(5,8,17,0.48) 100%);
+  background: radial-gradient(circle at center, rgba(5,8,17,0.18) 0%, rgba(5,8,17,0.65) 100%);
   pointer-events: none;
   z-index: 1;
+  transition: background 0.6s ease;
 }
 [data-theme="light"] #blackhole-canvas {
-  opacity: 0.90;
+  opacity: 0.25;
+}
+[data-theme="light"] #spacecraft-overlay {
+  opacity: 0.45;
 }
 [data-theme="light"] .bg-vignette-overlay {
-  background: radial-gradient(circle at center, rgba(248,250,252,0.12) 0%, rgba(248,250,252,0.60) 100%);
+  background: radial-gradient(circle at center, rgba(248,250,252,0.25) 0%, rgba(248,250,252,0.75) 100%);
 }
 
 .content-wrapper {
@@ -1734,16 +1758,24 @@ a:hover {
 .content-section {
   display: none;
   padding: 3rem 0 5rem;
-  animation: fadeIn 0.25s ease-in-out;
+  opacity: 0;
+  transform: translateY(18px);
 }
 
 .content-section.active {
   display: block;
+  animation: smoothSectionEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes smoothSectionEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .section-header {
@@ -3188,34 +3220,49 @@ function initTabs() {
   const sections = document.querySelectorAll('.content-section');
 
   function switchTab(targetTabId, updateHash = true) {
-    navLinks.forEach(link => link.classList.remove('active'));
-    sections.forEach(sec => sec.classList.remove('active'));
-
-    const activeLink = document.querySelector(`.nav-link[data-tab="${targetTabId}"]`);
     const activeSection = document.getElementById(targetTabId);
+    const activeLink = document.querySelector(`.nav-link[data-tab="${targetTabId}"]`);
+    if (!activeLink || !activeSection) return;
 
-    if (activeLink && activeSection) {
-      activeLink.classList.add('active');
+    const currentActive = document.querySelector('.content-section.active');
+    if (currentActive === activeSection) return;
+
+    navLinks.forEach(link => link.classList.remove('active'));
+    activeLink.classList.add('active');
+
+    // Smooth section transition (fade-out previous, fade-in new)
+    if (currentActive) {
+      currentActive.style.opacity = '0';
+      currentActive.style.transform = 'translateY(-14px)';
+      currentActive.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+      setTimeout(() => {
+        sections.forEach(sec => {
+          sec.classList.remove('active');
+          sec.style.opacity = '';
+          sec.style.transform = '';
+          sec.style.transition = '';
+        });
+        activeSection.classList.add('active');
+        if (window.MathJax && window.MathJax.typesetPromise) {
+          window.MathJax.typesetPromise([activeSection]);
+        }
+      }, 200);
+    } else {
+      sections.forEach(sec => sec.classList.remove('active'));
       activeSection.classList.add('active');
-
-      if (updateHash) {
-        history.replaceState(null, '', `#${targetTabId}`);
-      }
-
       if (window.MathJax && window.MathJax.typesetPromise) {
         window.MathJax.typesetPromise([activeSection]);
       }
-
-      // Scroll to content section smoothly if navigating to a specific tab
-      if (targetTabId !== 'home') {
-        const headerOffset = 75;
-        const elementPosition = activeSection.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
     }
+
+    if (updateHash) {
+      history.replaceState(null, '', `#${targetTabId}`);
+    }
+
+    // Scroll smoothly to target section
+    const targetOffset = targetTabId !== 'home' ? Math.max(0, activeSection.getBoundingClientRect().top + window.pageYOffset - 75) : 0;
+    window.scrollTo({ top: targetOffset, behavior: 'smooth' });
+  }
   }
 
   navLinks.forEach(link => {
@@ -3484,33 +3531,49 @@ function initTabs() {
   const sections = document.querySelectorAll('.content-section');
 
   function switchTab(targetTabId, updateHash = true) {
-    navLinks.forEach(link => link.classList.remove('active'));
-    sections.forEach(sec => sec.classList.remove('active'));
-
-    const activeLink = document.querySelector(`.nav-link[data-tab="${targetTabId}"]`);
     const activeSection = document.getElementById(targetTabId);
+    const activeLink = document.querySelector(`.nav-link[data-tab="${targetTabId}"]`);
+    if (!activeLink || !activeSection) return;
 
-    if (activeLink && activeSection) {
-      activeLink.classList.add('active');
+    const currentActive = document.querySelector('.content-section.active');
+    if (currentActive === activeSection) return;
+
+    navLinks.forEach(link => link.classList.remove('active'));
+    activeLink.classList.add('active');
+
+    // Smooth section transition (fade-out previous, fade-in new)
+    if (currentActive) {
+      currentActive.style.opacity = '0';
+      currentActive.style.transform = 'translateY(-14px)';
+      currentActive.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+      setTimeout(() => {
+        sections.forEach(sec => {
+          sec.classList.remove('active');
+          sec.style.opacity = '';
+          sec.style.transform = '';
+          sec.style.transition = '';
+        });
+        activeSection.classList.add('active');
+        if (window.MathJax && window.MathJax.typesetPromise) {
+          window.MathJax.typesetPromise([activeSection]);
+        }
+      }, 200);
+    } else {
+      sections.forEach(sec => sec.classList.remove('active'));
       activeSection.classList.add('active');
-
-      if (updateHash) {
-        history.replaceState(null, '', `#${targetTabId}`);
-      }
-
       if (window.MathJax && window.MathJax.typesetPromise) {
         window.MathJax.typesetPromise([activeSection]);
       }
-
-      if (targetTabId !== 'home') {
-        const headerOffset = 75;
-        const elementPosition = activeSection.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
     }
+
+    if (updateHash) {
+      history.replaceState(null, '', `#${targetTabId}`);
+    }
+
+    // Scroll smoothly to target section
+    const targetOffset = targetTabId !== 'home' ? Math.max(0, activeSection.getBoundingClientRect().top + window.pageYOffset - 75) : 0;
+    window.scrollTo({ top: targetOffset, behavior: 'smooth' });
+  }
   }
 
   navLinks.forEach(link => {
@@ -3835,7 +3898,7 @@ function initAbstractToggles() {
           this.targetPhi = cfg.phi;
           this.targetTheta = cfg.theta;
           this.targetRadius = cfg.radius;
-          this.diskBoost = 1.0; // Energetic accretion pulse!
+          this.diskBoost = 0.5; // Energetic accretion pulse!
         }
       };
 
@@ -3860,7 +3923,7 @@ function initAbstractToggles() {
       // Keyboard navigation
       window.addEventListener('keydown', (e) => {
         if (e.key === 'Tab' || e.key === ' ') {
-          this.diskBoost = 1.0;
+          this.diskBoost = 0.5;
         }
       });
 
@@ -4139,12 +4202,18 @@ function initAbstractToggles() {
       this.time = now * 0.001;
 
       // Smooth decay of accretion surge
-      this.diskBoost = Math.max(0, this.diskBoost - 0.015);
+      this.diskBoost = Math.max(0, this.diskBoost - 0.012);
 
-      // Smooth camera interpolation (cinematic gliding)
-      this.currentTheta += (this.targetTheta + this.scrollProgress * 0.85 - this.currentTheta) * 0.05;
-      this.currentPhi += (this.targetPhi - this.currentPhi) * 0.05;
-      this.currentRadius += (this.targetRadius - this.currentRadius) * 0.05;
+      // Silky-smooth camera interpolation (shortest angular path & cinematic crane damping)
+      let dTheta = (this.targetTheta + this.scrollProgress * 0.70) - this.currentTheta;
+      dTheta = Math.atan2(Math.sin(dTheta), Math.cos(dTheta));
+      this.currentTheta += dTheta * 0.035;
+
+      const dPhi = this.targetPhi - this.currentPhi;
+      this.currentPhi += dPhi * 0.035;
+
+      const dR = this.targetRadius - this.currentRadius;
+      this.currentRadius += dR * 0.035;
 
       // Mouse damping
       this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.08;
@@ -4181,7 +4250,7 @@ function initAbstractToggles() {
       gl.uniform1f(this.uniforms.uDiskOuter, 17.0);
       gl.uniform1f(this.uniforms.uDiskRotSpeed, 1.0);
       gl.uniform1f(this.uniforms.uDiskSpin, 1.0);
-      gl.uniform1f(this.uniforms.uExposure, 1.3);
+      gl.uniform1f(this.uniforms.uExposure, 1.05);
       gl.uniform1f(this.uniforms.uAxisTilt, 0.0);
       gl.uniform1f(this.uniforms.uTheme, this.theme);
       gl.uniform1f(this.uniforms.uDiskBoost, this.diskBoost);

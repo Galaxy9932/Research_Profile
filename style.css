@@ -102,54 +102,64 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   Dynamic Photorealistic 4K Interstellar Gargantua Black Hole Background
+   Prominent Gargantua (Interstellar) Landscape Background
    -------------------------------------------------------------------------- */
-#blackhole-canvas, #spacecraft-canvas {
+.bg-gargantua-layer {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 0;
+  background: url('../assets/gargantua_interstellar_black_hole.jpg') no-repeat center 35%;
+  background-size: cover;
+  opacity: 0.65; /* Prominently visible and impactful! */
+  mix-blend-mode: screen;
   pointer-events: none;
-  transition: opacity var(--transition-normal);
+  z-index: 0;
 }
 
-#blackhole-canvas {
-  background-color: var(--bg-primary);
+[data-theme="light"] .bg-gargantua-layer {
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  filter: contrast(110%);
 }
 
-#spacecraft-canvas {
-  background: transparent;
+.bg-feynman-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('../assets/feynman_background_overlay.svg') repeat center center;
+  background-size: 1000px auto;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
 }
 
-[data-theme="light"] #blackhole-canvas {
-  opacity: 0.85;
-  filter: contrast(108%);
+[data-theme="dark"] .bg-feynman-layer {
+  opacity: 0.12;
 }
 
-[data-theme="light"] #spacecraft-canvas {
-  opacity: 0.90;
-}
-
+/* Vignette to ensure text readability over the glowing accretion disk */
 .bg-vignette-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(circle at center, rgba(5, 8, 17, 0.15) 0%, rgba(5, 8, 17, 0.70) 100%);
+  background: radial-gradient(circle at center, rgba(5, 8, 17, 0.4) 0%, rgba(5, 8, 17, 0.85) 100%);
   pointer-events: none;
   z-index: 0;
 }
 
 [data-theme="light"] .bg-vignette-overlay {
-  background: radial-gradient(circle at center, rgba(248, 250, 252, 0.30) 0%, rgba(248, 250, 252, 0.82) 100%);
+  background: radial-gradient(circle at center, rgba(248, 250, 252, 0.6) 0%, rgba(248, 250, 252, 0.92) 100%);
 }
 
 .content-wrapper {
   position: relative;
-  z-index: 1;
+  z-index: 10;
 }
 
 a {

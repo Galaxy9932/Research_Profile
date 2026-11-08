@@ -1,8 +1,4 @@
-/* --------------------------------------------------------------------------
-   Soham Maity - Theoretical Physics & Cosmology Portfolio
-   Features: Prominent Gargantua (Interstellar) Background, Right-Corner Profile,
-   Scroll-Triggered Envelope Dispatch, 6 Broad Research Pillars & Real Result Plots
-   -------------------------------------------------------------------------- */
+/* Academic portfolio */
 
 :root {
   /* Light Theme */
@@ -95,66 +91,9 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.65;
-  overflow-x: hidden;
   position: relative;
   transition: background-color var(--transition-normal), color var(--transition-normal);
   -webkit-font-smoothing: antialiased;
-}
-
-/* --------------------------------------------------------------------------
-   Prominent Gargantua (Interstellar) Landscape Background
-   -------------------------------------------------------------------------- */
-.bg-gargantua-layer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: url('../assets/gargantua_interstellar_black_hole.jpg') no-repeat center 35%;
-  background-size: cover;
-  opacity: 0.65; /* Prominently visible and impactful! */
-  mix-blend-mode: screen;
-  pointer-events: none;
-  z-index: 0;
-}
-
-[data-theme="light"] .bg-gargantua-layer {
-  opacity: 0.22;
-  mix-blend-mode: multiply;
-  filter: contrast(110%);
-}
-
-.bg-feynman-layer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: url('../assets/feynman_background_overlay.svg') repeat center center;
-  background-size: 1000px auto;
-  opacity: 0.08;
-  pointer-events: none;
-  z-index: 0;
-}
-
-[data-theme="dark"] .bg-feynman-layer {
-  opacity: 0.12;
-}
-
-/* Vignette to ensure text readability over the glowing accretion disk */
-.bg-vignette-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(circle at center, rgba(5, 8, 17, 0.4) 0%, rgba(5, 8, 17, 0.85) 100%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-[data-theme="light"] .bg-vignette-overlay {
-  background: radial-gradient(circle at center, rgba(248, 250, 252, 0.6) 0%, rgba(248, 250, 252, 0.92) 100%);
 }
 
 .content-wrapper {
@@ -436,16 +375,6 @@ a:hover {
   color: var(--brand-secondary);
 }
 
-.scroll-indicator-cue i {
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(8px); }
-  60% { transform: translateY(4px); }
-}
-
 /* --------------------------------------------------------------------------
    Scroll-Triggered Envelope Opening Mechanism
    -------------------------------------------------------------------------- */
@@ -464,52 +393,6 @@ a:hover {
   box-shadow: var(--shadow-lg);
   overflow: visible;
   transition: all var(--transition-normal);
-}
-
-.envelope-flap {
-  position: absolute;
-  top: -1px;
-  left: 0;
-  width: 100%;
-  height: 140px;
-  background: linear-gradient(180deg, var(--envelope-body) 0%, var(--bg-secondary) 100%);
-  border-bottom: 2px solid var(--envelope-border);
-  border-left: 1px solid var(--envelope-border);
-  border-right: 1px solid var(--envelope-border);
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  transform-origin: top center;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  padding-bottom: 15px;
-}
-
-.wax-seal-badge {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #ef4444 30%, #991b1b 100%);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 700;
-  border: 2px solid #fca5a5;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.envelope-wrapper.opened .envelope-flap {
-  transform: rotateX(175deg);
-}
-
-.envelope-wrapper.opened .wax-seal-badge {
-  opacity: 0;
-  transform: scale(0.6);
 }
 
 .envelope-letter {
@@ -584,7 +467,7 @@ a:hover {
 
 .letter-nav-actions {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
   gap: 1rem;
   margin-top: 2rem;
 }
@@ -661,28 +544,10 @@ a:hover {
    Tabs Content Container
    -------------------------------------------------------------------------- */
 .content-section {
-  display: none;
-  padding: 3rem 0 5rem;
-  opacity: 0;
-  transform: translateY(18px);
+  padding: clamp(2.75rem, 6vw, 6rem) 0;
+  border-bottom: 1px solid var(--border-color);
 }
-
-.content-section.active {
-  display: block;
-  animation: smoothSectionEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes smoothSectionEnter {
-  0% {
-    opacity: 0;
-    transform: translateY(22px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
+#home { padding-top: 0; }
 .section-header {
   margin-bottom: 2.5rem;
   padding-bottom: 1.25rem;
@@ -712,7 +577,7 @@ a:hover {
    -------------------------------------------------------------------------- */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
   gap: 1.75rem;
   margin-bottom: 2.5rem;
 }
@@ -796,7 +661,7 @@ a:hover {
 
 .request-form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
   gap: 1rem;
   margin-bottom: 1.25rem;
 }
@@ -983,25 +848,6 @@ a:hover {
 /* --------------------------------------------------------------------------
    BibTeX Modal
    -------------------------------------------------------------------------- */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(4px);
-  z-index: 2000;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-
-.modal-overlay.open {
-  display: flex;
-}
-
 .modal-container {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -1068,13 +914,93 @@ a:hover {
   gap: 1rem;
 }
 
-@media (max-width: 900px) {
-  .hero-corner-profile {
-    position: static;
-    margin-bottom: 1.5rem;
-  }
-  .hero-name-middle { font-size: 2.8rem; }
-  .envelope-letter { padding: 1.75rem 1.25rem; margin: 0.75rem; }
-  .header-inner { height: auto; padding: 0.75rem 0; flex-wrap: wrap; }
-  .main-nav { order: 3; width: 100%; overflow-x: auto; padding-top: 0.5rem; }
+
+/* The reading layout and decorative hero share the same responsive grid. */
+[hidden] { display: none !important; }
+html { scroll-padding-top: 6rem; }
+[data-theme="dark"] { color-scheme: dark; }
+:focus-visible { outline: 3px solid var(--border-focus); outline-offset: 4px; }
+.skip-link {
+  position: fixed;
+  z-index: 1100;
+  top: 0.5rem;
+  left: 0.5rem;
+  padding: 0.65rem 1rem;
+  background: var(--bg-secondary);
+  transform: translateY(-150%);
+}
+.skip-link:focus { transform: none; }
+.header-inner { height: auto; min-height: 4.5rem; gap: 1rem; }
+.main-nav { flex-wrap: wrap; justify-content: center; }
+.nav-link { display: inline-flex; align-items: center; min-height: 44px; }
+.nav-link[aria-current="location"] {
+  background: var(--brand-tag-bg);
+  color: var(--brand-tag-text);
+}
+.theme-toggle-btn { width: auto; min-height: 44px; padding: 0 0.7rem; white-space: nowrap; }
+.hero-centered {
+  isolation: isolate;
+  min-height: min(72vh, 48rem);
+  max-width: 1180px;
+  margin: auto;
+  padding: clamp(2.5rem, 7vw, 6rem) 1.5rem;
+  align-items: flex-start;
+  text-align: left;
+}
+.hero-visual {
+  position: absolute;
+  inset: 0 0 0 28%;
+  z-index: -1;
+  opacity: 0.28;
+  overflow: hidden;
+  pointer-events: none;
+  background: #08080d url("gargantua_interstellar_black_hole.jpg") center / cover no-repeat;
+  mask-image: radial-gradient(ellipse at center, #000 25%, transparent 72%);
+}
+[data-theme="light"] .hero-visual { opacity: 0.16; }
+#blackhole-canvas { width: 100%; height: 100%; display: block; }
+.hero-corner-profile { position: static; margin-bottom: 1.25rem; z-index: auto; align-items: flex-start; }
+.profile-avatar-frame { width: 88px; height: 88px; }
+.profile-avatar-badge { display: none; }
+.hero-name-middle { font-size: clamp(2.8rem, 8vw, 6.5rem); line-height: 1; letter-spacing: -0.045em; }
+.hero-tags-compact { justify-content: flex-start; }
+.hero-affiliation-brief { max-width: 46ch; }
+.scroll-indicator-cue { flex-direction: row; min-height: 44px; }
+#motion-toggle { margin-top: 0.75rem; }
+.section-title { font-size: clamp(1.85rem, 4vw, 3rem); }
+.section-header { max-width: 75ch; }
+.content-section { overflow-wrap: anywhere; }
+.card, .form-group { min-width: 0; }
+.form-control { max-width: 100%; }
+.request-help { margin-bottom: 0.9rem; }
+.pub-abstract { display: block; }
+.citation-dialog {
+  margin: auto;
+  width: min(650px, calc(100% - 2rem));
+  max-height: 90vh;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}
+.citation-dialog::backdrop { background: rgba(0, 0, 0, 0.72); }
+.modal-container { max-width: none; }
+.modal-close-btn { min-width: 44px; min-height: 44px; }
+.modal-footer { align-items: center; flex-wrap: wrap; }
+@media (max-width: 1100px) {
+  html { scroll-padding-top: 1rem; }
+  .site-header { position: static; }
+  .header-inner { flex-wrap: wrap; padding-block: 0.75rem; }
+  .header-actions { margin-left: auto; }
+  .main-nav { order: 3; width: 100%; justify-content: flex-start; }
+}
+@media (max-width: 600px) {
+  .container, .hero-centered { padding-inline: 1rem; }
+  .hero-visual { inset: 8% 0 8% 0; }
+  .main-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero-centered { min-height: auto; }
+  .envelope-letter { padding: 1.2rem; margin: 0.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
